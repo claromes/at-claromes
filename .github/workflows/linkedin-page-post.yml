@@ -42,7 +42,7 @@ jobs:
               "specificContent": {
                 "com.linkedin.ugc.ShareContent": {
                   "shareCommentary": {
-                    "text": "Atividades recentes do GitHub:\n'"${{ env.ACTIVITIES }}"'\nEsta é uma postagem automática."
+                    "text": "Atividades recentes do GitHub:\n'"${{ env.ACTIVITIES }}"'Esta é uma postagem automática."
                   },
                   "shareMediaCategory": "NONE"
                 }
