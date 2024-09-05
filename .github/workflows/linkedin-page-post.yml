@@ -2,7 +2,7 @@ name: Post to LinkedIn Page
 
 on:
   schedule:
-    - cron: '0 0 */2 * *'
+    - cron: '0 */12 * * *'
   workflow_dispatch:
 
 jobs:
@@ -17,7 +17,7 @@ jobs:
         id: get_activities
         run: |
           activities=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            https://api.github.com/users/claromes/events | jq '.[0:5]')
+            https://api.github.com/users/claromes/events | jq '.[0:2]')
           
           if [ -z "$activities" ]; then
             echo "No GitHub activities found."
@@ -27,7 +27,7 @@ jobs:
           activities_text=$(echo "$activities" | jq -r '
             .[] | 
             "Tipo: \(.type), Repositório: https://github.com/\(.repo.name), Mensagem: \(.payload.commits[0].message // "Nenhuma mensagem"), Ref: \(.payload.ref // "Nenhuma ref"), Criado em: \(.created_at)"
-          ' | paste -sd ' • ' -)
+          ' | paste -sd ' / ' -)
 
           echo "ACTIVITIES=$activities_text" >> $GITHUB_ENV
 
@@ -42,7 +42,7 @@ jobs:
               "specificContent": {
                 "com.linkedin.ugc.ShareContent": {
                   "shareCommentary": {
-                    "text": "Atividades recentes do GitHub:\n'"${{ env.ACTIVITIES }}"'\nEsta é uma postagem automática."
+                    "text": "Atividades recentes do GitHub:\n'"${{ env.ACTIVITIES }}"'\n\nEsta é uma postagem automática."
                   },
                   "shareMediaCategory": "NONE"
                 }
