@@ -26,8 +26,8 @@ jobs:
 
           activities_text=$(echo "$activities" | jq -r '
             .[] | 
-            "Type: \(.type), Repositório: https://github.com/\(.repo.name), Mensagem: \(.payload.commits[0].message), URL: \(.repo.url)" |
-            join(" | ")
+            "Tipo: \(.type), Repositório: https://github.com/\(.repo.name), Mensagem: \(.payload.commits[0].message // "Nenhuma mensagem"), Ref: \(.payload.ref), Criado em: \(.created_at)" |
+            join(" • ")
           ')
 
           echo "ACTIVITIES=$activities_text" >> $GITHUB_ENV
