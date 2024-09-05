@@ -1,0 +1,54 @@
+name: Post to LinkedIn Page
+
+on:
+  schedule:
+    - cron: '0 0 */2 * *'
+  workflow_dispatch:
+
+jobs:
+  post-linkedin:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository content
+        uses: actions/checkout@v3
+
+      - name: Get GitHub activities
+        id: get_activities
+        run: |
+          activities=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/users/claromes/events | jq '.[0:5]')
+          
+          if [ -z "$activities" ]; then
+            echo "No GitHub activities found."
+            exit 1
+          fi
+
+          activities_text=$(echo "$activities" | jq -r '
+            .[] | 
+            "\(.type): \(.repo.name) - \(.payload.commits[0].message) (\(.repo.url))" |
+            join(", ")
+          ')
+
+          echo "ACTIVITIES=$activities_text" >> $GITHUB_ENV
+
+      - name: Send update to LinkedIn Page
+        run: |
+          curl -X POST https://api.linkedin.com/v2/ugcPosts \
+            -H "Authorization: Bearer ${{ secrets.LINKEDIN_ACCESS_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "author": "urn:li:organization:104661399",
+              "lifecycleState": "PUBLISHED",
+              "specificContent": {
+                "com.linkedin.ugc.ShareContent": {
+                  "shareCommentary": {
+                    "text": "Atividades recentes do GitHub: '"${{ env.ACTIVITIES }}"' · Esta é uma postagem automática."
+                  },
+                  "shareMediaCategory": "NONE"
+                }
+              },
+              "visibility": {
+                "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC"
+              }
+            }'
