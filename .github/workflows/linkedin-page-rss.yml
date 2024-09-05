@@ -13,15 +13,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Fetch RSS feed
-        run: |
-          curl -s https://claromes.com/feeds/rss.xml -o feed.xml
-
       - name: Install Python dependencies
         run: |
           python -m venv venv
           . venv/bin/activate
-          pip install feedparser requests
+          pip install feedparser requests beautifulsoup4 lxml
 
       - name: Parse RSS feed and post to LinkedIn Page
         run: |
