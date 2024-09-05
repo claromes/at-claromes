@@ -36,7 +36,7 @@ def linkedin_post(title, link, description):
         "specificContent": {
             "com.linkedin.ugc.ShareContent": {
                 "shareCommentary": {
-                    "text": f"{title}\n\n{description}\n\nRead more: {link}"
+                    "text": f"{title}\n\n{description}\n\nRead more: {link}\n\nThis is an automatic post."
                 },
                 "shareMediaCategory": "NONE"
             }
