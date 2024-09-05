@@ -25,9 +25,9 @@ jobs:
           fi
 
           activities_text=$(echo "$activities" | jq -r '
-            .[] | 
+            .[] |
             "Tipo: \(.type)\nRepositório: https://github.com/\(.repo.name)\nMensagem: \(.payload.commits[0].message // "Nenhuma mensagem")\nRef: \(.payload.ref // "Nenhuma ref")\nCriado em: \(.created_at)" 
-          ' | paste -sd '\n\n' -)
+          ' | tr '\n' ' ' | sed 's/ \n/ \n\n/g')
 
           echo "ACTIVITIES=$activities_text" >> $GITHUB_ENV
 
@@ -42,7 +42,7 @@ jobs:
               "specificContent": {
                 "com.linkedin.ugc.ShareContent": {
                   "shareCommentary": {
-                    "text": "Atividades recentes do GitHub: '"${{ env.ACTIVITIES }}"' · Esta é uma postagem automática."
+                    "text": "Atividades recentes do GitHub:\n'"${{ env.ACTIVITIES }}"'\nEsta é uma postagem automática."
                   },
                   "shareMediaCategory": "NONE"
                 }
