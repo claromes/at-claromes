@@ -17,7 +17,7 @@ jobs:
         id: get_activities
         run: |
           activities=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            https://api.github.com/users/claromes/events | jq '.[0:6]')
+            https://api.github.com/users/claromes/events | jq '.[0:5]')
           
           if [ -z "$activities" ]; then
             echo "No GitHub activities found."
@@ -27,7 +27,7 @@ jobs:
           activities_text=$(echo "$activities" | jq -r '
             .[] | 
             "Tipo: \(.type), Repositório: https://github.com/\(.repo.name), Mensagem: \(.payload.commits[0].message // "Nenhuma mensagem"), Ref: \(.payload.ref // "Nenhuma ref"), Criado em: \(.created_at)"
-          ' | paste -sd ' | ' -)
+          ' | paste -sd ' \n\n ' -)
 
           echo "ACTIVITIES=$activities_text" >> $GITHUB_ENV
 
