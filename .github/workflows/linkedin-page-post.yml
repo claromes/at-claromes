@@ -24,12 +24,15 @@ jobs:
             exit 1
           fi
 
-          activities_text=$(echo "$activities" | jq -r '
-            .[] | 
-            "Tipo: \(.type), Repositório: https://github.com/\(.repo.name), Mensagem: \(.payload.commits[0].message // "Nenhuma mensagem"), Ref: \(.payload.ref // "Nenhuma ref"), Criado em: \(.created_at)"
-          ' | awk '{print}' ORS='\n\n')
+          temp_file=$(mktemp)
 
-          echo "ACTIVITIES=$activities_text" >> $GITHUB_ENV
+          echo "$activities" | jq -r '
+                      .[] | 
+                      "Tipo: \(.type), Repositório: https://github.com/\(.repo.name), Mensagem: \(.payload.commits[0].message // "Nenhuma mensagem"), Ref: \(.payload.ref // "Nenhuma ref"), Criado em: \(.created_at)"
+                    ' | awk '{print}' ORS='\n\n' > "$temp_file"
+          
+          echo "ACTIVITIES=$(cat "$temp_file")" >> $GITHUB_ENV
+          rm "$temp_file"
 
       - name: Send update to LinkedIn Page
         run: |
