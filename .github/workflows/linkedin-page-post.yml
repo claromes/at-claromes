@@ -24,15 +24,15 @@ jobs:
             exit 1
           fi
 
-          activities_text=$(echo "$activities" | jq -r '
+          echo "$activities" | jq -r '
             .[] |
-            "Tipo: \(.type)\nRepositório: https://github.com/\(.repo.name)\nMensagem: \(.payload.commits[0].message // "Nenhuma mensagem")\nRef: \(.payload.ref // "Nenhuma ref")\nCriado em: \(.created_at)\n"
-          ' | awk '{printf "%s", $0}' | sed 's/ \n/\n/g')
-
-          echo "ACTIVITIES=$activities_text" >> $GITHUB_ENV
+            "Tipo: \(.type)\nRepositório: https://github.com/\(.repo.name)\nMensagem: \(.payload.commits[0].message // "Nenhuma mensagem")\nRef: \(.payload.ref // "Nenhuma ref")\nCriado em: \(.created_at)"
+          ' > activities.txt
 
       - name: Send update to LinkedIn Page
         run: |
+          activities_text=$(cat activities.txt)
+        
           curl -X POST https://api.linkedin.com/v2/ugcPosts \
             -H "Authorization: Bearer ${{ secrets.LINKEDIN_ACCESS_TOKEN }}" \
             -H "Content-Type: application/json" \
