@@ -29,10 +29,11 @@ jobs:
             "Tipo: \(.type)\nRepositório: https://github.com/\(.repo.name)\nMensagem: \(.payload.commits[0].message // "Nenhuma mensagem")\nRef: \(.payload.ref // "Nenhuma ref")\nCriado em: \(.created_at)"
           ' > activities.txt
 
+        
+          echo "ACTIVITIES=$(cat activities.txt)" >> $GITHUB_ENV
+
       - name: Send update to LinkedIn Page
         run: |
-          activities_text=$(cat activities.txt)
-        
           curl -X POST https://api.linkedin.com/v2/ugcPosts \
             -H "Authorization: Bearer ${{ secrets.LINKEDIN_ACCESS_TOKEN }}" \
             -H "Content-Type: application/json" \
