@@ -1,6 +1,12 @@
 import feedparser
 import requests
 import os
+from bs4 import BeautifulSoup
+
+def remove_html_tags(text):
+    """Removes HTML tags from a string."""
+    soup = BeautifulSoup(text, "html.parser")
+    return soup.get_text()
 
 def fetch_rss_feed(feed_url):
     """Reads the RSS feed and returns the first entry."""
@@ -8,9 +14,9 @@ def fetch_rss_feed(feed_url):
     if len(feed.entries) > 0:
         first_entry = feed.entries[0]
         return {
-            "title": first_entry.title,
-            "link": first_entry.link,
-            "description": first_entry.description
+            "title": remove_html_tags(first_entry.title),
+            "description": remove_html_tags(first_entry.description),
+            "link": remove_html_tags(first_entry.link)
         }
     return None
 
