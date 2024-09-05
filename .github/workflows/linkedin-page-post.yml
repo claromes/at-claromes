@@ -2,7 +2,7 @@ name: Post to LinkedIn Page
 
 on:
   schedule:
-    - cron: '0 */12 * * *'
+    - cron: '0 0 */2 * *'
   workflow_dispatch:
 
 jobs:
@@ -17,7 +17,7 @@ jobs:
         id: get_activities
         run: |
           activities=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            https://api.github.com/users/claromes/events | jq '.[0:2]')
+            https://api.github.com/users/claromes/events | jq '.[0:6]')
           
           if [ -z "$activities" ]; then
             echo "No GitHub activities found."
