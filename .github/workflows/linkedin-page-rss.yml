@@ -3,6 +3,7 @@ name: Post RSS Feed to LinkedIn Page
 on:
   schedule:
     - cron: "0 0 */2 * *"
+  workflow_dispatch:
 
 jobs:
   post_to_linkedin:
