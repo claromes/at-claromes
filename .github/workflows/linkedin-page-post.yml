@@ -24,13 +24,13 @@ jobs:
             exit 1
           fi
 
-          echo "$activities" | jq -r '
+          activities_text=$(echo "$activities" | jq -r '
             .[] |
-            "Tipo: \(.type)\nRepositório: https://github.com/\(.repo.name)\nMensagem: \(.payload.commits[0].message // "Nenhuma mensagem")\nRef: \(.payload.ref // "Nenhuma ref")\nCriado em: \(.created_at)"
-          ' > activities.txt
+            "Tipo: \(.type)\nRepositório: https://github.com/\(.repo.name)\nMensagem: \(.payload.commits[0].message // "Nenhuma mensagem")\nRef: \(.payload.ref // "Nenhuma ref")\nCriado em: \(.created_at)" |
+            join(" • ")
+          ')
 
-        
-          echo "ACTIVITIES=$(cat activities.txt)" >> $GITHUB_ENV
+          echo "ACTIVITIES=$activities_text" >> $GITHUB_ENV
 
       - name: Send update to LinkedIn Page
         run: |
