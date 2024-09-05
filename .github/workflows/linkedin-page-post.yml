@@ -26,7 +26,7 @@ jobs:
 
           activities_text=$(echo "$activities" | jq -r '
             .[] | 
-            "\(.type): \(.repo.name) - \(.payload.commits[0].message) (\(.repo.url))" |
+            "Type: \(.type), Repository: \(.repo.name), Message: \(.payload.commits[0].message), URL: \(.repo.url)" |
             join(", ")
           ')
 
