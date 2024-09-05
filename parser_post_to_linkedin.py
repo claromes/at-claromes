@@ -54,7 +54,7 @@ def linkedin_post(title, link, description):
 
 if __name__ == "__main__":
     # RSS feed URL
-    feed_url = "https://claromes.com/feeds/all.atom.xml"
+    feed_url = "https://claromes.com/feeds/rss.xml"
     
     # Fetch RSS feed
     rss_item = fetch_rss_feed(feed_url)
