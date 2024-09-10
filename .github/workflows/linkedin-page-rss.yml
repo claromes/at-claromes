@@ -1,4 +1,4 @@
-name: Post RSS Feed to LinkedIn Page
+name: Post Feeds to LinkedIn Page
 
 on:
   schedule:
@@ -17,12 +17,12 @@ jobs:
         run: |
           python -m venv venv
           . venv/bin/activate
-          pip install feedparser requests beautifulsoup4 lxml
+          pip install -r requirements.txt
 
-      - name: Parse RSS feed and post to LinkedIn Page
+      - name: Parse feeds and post to LinkedIn Page
         run: |
           . venv/bin/activate
-          python parser_post_to_linkedin.py
+          python post_to_linkedin.py
         env:
           LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
           LINKEDIN_ORG_ID: ${{ secrets.LINKEDIN_ORG_ID }}
