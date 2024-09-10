@@ -80,7 +80,7 @@ def linkedin_post(item_post):
         "specificContent": {
             "com.linkedin.ugc.ShareContent": {
                 "shareCommentary": {
-                    "text": {item_post}
+                    "text": f"{item_post}"
                 },
                 "shareMediaCategory": "NONE"
             }
