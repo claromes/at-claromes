@@ -22,7 +22,7 @@ jobs:
       - name: Parse feed and post to LinkedIn Page
         run: |
           . venv/bin/activate
-          python blog_posts_to_linkedin.py
+          python src/blog_posts_to_linkedin.py
         env:
           LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
           LINKEDIN_ORG_ID: ${{ secrets.LINKEDIN_ORG_ID }}
