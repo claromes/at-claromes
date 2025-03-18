@@ -22,7 +22,7 @@ def fetch_blog(feed_url):
 
 def format_blog_posts(entry):
     """Formats the blog entry for posting."""
-    formatted_post = f"{entry['title']}\n\n{entry['description']}\n\nRead more: {entry['link']}\n\nThis is an automatic post."
+    formatted_post = f"{entry['title']}\n\n{entry['description']}\n\nRead more: {entry['link']}\n\nThis is an automated post."
     return formatted_post
 
 if __name__ == "__main__":
