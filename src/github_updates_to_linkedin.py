@@ -38,7 +38,7 @@ def format_github_posts(entries):
         formatted_posts_list.append(f"{i}. {github_item['title']} · {github_item['date']}\n\n{github_item['id']}: {github_item['link']}")
 
     formatted_posts = "\n\n".join(formatted_posts_list)
-    formatted_posts += "\n\nThis is an automatic post."
+    formatted_posts += "\n\nThis is an automated post."
     return formatted_posts
 
 if __name__ == "__main__":
